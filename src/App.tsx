@@ -16,9 +16,25 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import AuthNavigator from './navigation/AuthNavigator';
+import {supabase} from './supabase/supabase';
+import {useUserStore} from './store/userStore';
+import {IUser} from './typings/userTyping';
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const setUser = useUserStore(state => state.setUser);
+  const setAuth = useUserStore(state => state.setAuth);
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN' && session) {
+      setUser(session.user as IUser);
+      setAuth(true);
+    }
+    if (event === 'SIGNED_OUT') {
+      setUser(null);
+      setAuth(false);
+    }
+  });
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,

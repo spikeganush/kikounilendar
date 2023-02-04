@@ -1,11 +1,50 @@
-import React from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import {SUPABASE_URL, SUPABASE_ANON_KEY} from '@env';
-//import {supabase} from '../../supabase/supabase';
+import React, {useEffect} from 'react';
+import {Image, Linking, Pressable, StyleSheet, Text, View} from 'react-native';
 import {COLOURS} from '../../constants/generalConstants';
+import {useUserStore} from '../../store/userStore';
+import {supabase} from '../../supabase/supabase';
 
 export default function LoginScreen() {
-  console.log(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const user = useUserStore(state => state.user);
+  const auth = useUserStore(state => state.auth);
+
+  const signInWithGoogle = async () => {
+    try {
+      const {data, error} = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      });
+      if (error) console.log('error', error);
+      if (data && data.url) Linking.openURL(data.url);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const logOUt = async () => {
+    try {
+      const {error} = await supabase.auth.signOut();
+      if (error) console.log('error', error);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  useEffect(() => {
+    Linking.addEventListener('url', event => {
+      console.log('event', event);
+      const urlString = event.url.replace('app#', 'app?');
+      const url = new URL(urlString);
+      const accessToken = url.searchParams.get('access_token');
+      const refreshToken = url.searchParams.get('refresh_token');
+      // Login with the refresh token in supabase
+      if (accessToken && refreshToken) {
+        supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+      }
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -24,7 +63,8 @@ export default function LoginScreen() {
             color: COLOURS.LIGHT_GREY,
             radius: 45,
             borderless: true,
-          }}>
+          }}
+          onPress={signInWithGoogle}>
           <Image
             source={require('../../../assets/images/google-logo.png')}
             style={styles.google}
@@ -32,6 +72,15 @@ export default function LoginScreen() {
         </Pressable>
         <Text style={styles.subtitle}>Connect with Google</Text>
       </View>
+      {user && (
+        <View>
+          <Text style={styles.subtitle}>{user.email}</Text>
+          <Text style={styles.subtitle}>Logged: {JSON.stringify(auth)}</Text>
+          <Pressable onPress={logOUt}>
+            <Text style={styles.subtitle}>Log out</Text>
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 }
