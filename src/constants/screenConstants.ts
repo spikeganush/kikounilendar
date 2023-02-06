@@ -1,9 +1,8 @@
 export enum AppScreens {
-  WelcomeScreen = 'WelcomeScreen',
   HomeScreen = 'HomeScreen',
+  LoverScreen = 'LoverScreen',
   LoginScreen = 'LoginScreen',
-  RegisterScreen = 'RegisterScreen',
-  ForgotPasswordScreen = 'ForgotPasswordScreen',
-  ResetPasswordScreen = 'ResetPasswordScreen',
-  ProfileScreen = 'ProfileScreen',
+  SettingsScreen = 'SettingsScreen',
+
+  BottomNavigator = 'BottomNavigator',
 }

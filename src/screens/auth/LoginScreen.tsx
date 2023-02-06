@@ -31,7 +31,6 @@ export default function LoginScreen() {
 
   useEffect(() => {
     Linking.addEventListener('url', event => {
-      console.log('event', event);
       const urlString = event.url.replace('app#', 'app?');
       const url = new URL(urlString);
       const accessToken = url.searchParams.get('access_token');
@@ -72,15 +71,6 @@ export default function LoginScreen() {
         </Pressable>
         <Text style={styles.subtitle}>Connect with Google</Text>
       </View>
-      {user && (
-        <View>
-          <Text style={styles.subtitle}>{user.email}</Text>
-          <Text style={styles.subtitle}>Logged: {JSON.stringify(auth)}</Text>
-          <Pressable onPress={logOUt}>
-            <Text style={styles.subtitle}>Log out</Text>
-          </Pressable>
-        </View>
-      )}
     </View>
   );
 }
@@ -93,7 +83,7 @@ const styles = StyleSheet.create({
   },
   'logo-container': {
     width: '60%',
-    aspectRatio: 0.89,
+    aspectRatio: 0.7,
   },
   logo: {
     width: '100%',
