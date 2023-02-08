@@ -46,3 +46,14 @@ export interface IUser {
   created_at: string;
   updated_at: string;
 }
+
+export interface IUserDb {
+  id: string;
+  full_name: string;
+  username: string | null;
+  lover_id: string | null;
+  avatar_url: string | null;
+  updated_at: string | null;
+  personal_notifications: boolean;
+  lover_notifications: boolean;
+}

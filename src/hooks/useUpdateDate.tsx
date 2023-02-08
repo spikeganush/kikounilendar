@@ -19,10 +19,13 @@ export const useUpdateDate = () => {
   };
 
   useEffect(() => {
-    setInterval(() => {
+    setWeekNumber(moment().week());
+    const interval = setInterval(() => {
       updateDate();
     }, 1000 * 60);
-    setWeekNumber(moment().week());
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   useEffect(() => {
@@ -40,7 +43,7 @@ export const useUpdateDate = () => {
     setNow(
       `${date?.day} ${date?.dayNumber} ${date?.month} ${date?.year} ${hour} ${amPm}`,
     );
-  }, [hour]);
+  }, [hour, amPm]);
 
   return {updateDate};
 };

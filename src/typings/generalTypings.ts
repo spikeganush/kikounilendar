@@ -4,3 +4,8 @@ export interface IDateParsed {
   month: string;
   year: string;
 }
+
+export interface IError {
+  message: string;
+  isErrored: boolean;
+}
