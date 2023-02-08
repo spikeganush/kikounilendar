@@ -276,6 +276,7 @@ const styles = StyleSheet.create({
     width: 100,
     aspectRatio: 1,
     borderRadius: 50,
+    marginBottom: 10,
   },
   'user-info__container': {
     display: 'flex',

@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {sizeBasedOnScreenWidth} from '../utils/generalUtilities';
 import {COLOURS} from './generalConstants';
 
 export const commonStyles = StyleSheet.create({
@@ -7,7 +8,7 @@ export const commonStyles = StyleSheet.create({
   },
   text: {
     color: COLOURS.BLACK,
-    fontSize: 20,
+    fontSize: sizeBasedOnScreenWidth(15.625),
     fontWeight: 'bold',
   },
 });

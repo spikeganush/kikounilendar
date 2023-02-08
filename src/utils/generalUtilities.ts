@@ -1,3 +1,4 @@
+import {Dimensions} from 'react-native';
 import {supabase} from '../supabase/supabase';
 import {IError} from '../typings/generalTypings';
 import {IUserDb} from '../typings/userTyping';
@@ -42,4 +43,9 @@ export const checkUsername = async (props: ICheckUsernameProps) => {
   } else {
     setError({message: '', isErrored: false});
   }
+};
+
+export const sizeBasedOnScreenWidth = (number: number) => {
+  const screenWidth = Dimensions.get('window').width;
+  return (number / 375) * screenWidth;
 };
